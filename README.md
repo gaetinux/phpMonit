@@ -13,7 +13,6 @@ Configuration pour mettre à jour les informations automatiquement :
 
 Par exemple pour mettre à jour les informations toutes les 30 secondes :
 
-# m h  dom mon dow   command
 * * * * * /usr/bin/curl --silent http://localhost/scripts/checkWebsites.php >> /tmp/curl.log
 * * * * * sleep 30; /usr/bin/curl --silent http://localhost/scripts/checkWebsites.php >> /tmp/curl.log
 
