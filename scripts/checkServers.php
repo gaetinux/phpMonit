@@ -20,8 +20,8 @@ function checkServer($ip)
     $stmt->execute();
     $servers = $stmt->fetchAll();
 
-    // Exécution du ping (-n sur windows -c sur linux)
-    exec("ping -n 2 -w 2 " . $ip, $output, $result);
+    // Exécution du ping
+    exec("ping -c 2 -w 2 " . $ip, $output, $result);
 
     foreach ($servers as $server) {
 
