@@ -45,15 +45,21 @@ header("refresh: 30");
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                             <li class="nav-item">
-                                <a class="nav-link" href="websites.php">sites web</a>
+                                <a class="nav-link" href="index.php">home</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="servers.php">serveurs</a>
+                                <a class="nav-link" href="websites.php">websites</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="servers.php">servers</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="add.php">add</a>
                             </li>
                         </ul>
                         <form class="d-flex" action="index.php" method="get">
-                            <input class="form-control me-2" type="text" placeholder="nom site ou serveur" id="search" name="search" required pattern="^[a-z ]+$" maxlength="20">
-                            <button class="btn btn-outline-primary" type="submit">recherche</button>
+                            <input class="form-control me-2" type="text" placeholder="website or server name" id="search" name="search" required pattern="^[a-z ]+$" maxlength="20">
+                            <button class="btn btn-outline-primary" type="submit">search</button>
                         </form>
                     </div>
                 <?php } ?>

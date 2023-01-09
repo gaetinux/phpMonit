@@ -89,15 +89,21 @@ header("refresh: 30");
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                             <li class="nav-item">
-                                <a class="nav-link" href="websites.php">sites web</a>
+                                <a class="nav-link" href="index.php">home</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="servers.php">serveurs</a>
+                                <a class="nav-link" href="websites.php">websites</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="servers.php">servers</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="add.php">add</a>
                             </li>
                         </ul>
                         <form class="d-flex" action="index.php" method="get">
-                            <input class="form-control me-2" type="text" placeholder="nom site ou serveur" id="search" name="search" required pattern="^[a-z ]+$" maxlength="20">
-                            <button class="btn btn-outline-primary" type="submit">recherche</button>
+                            <input class="form-control me-2" type="text" placeholder="website or server name" id="search" name="search" required pattern="^[a-z ]+$" maxlength="20">
+                            <button class="btn btn-outline-primary" type="submit">search</button>
                         </form>
                     </div>
                 <?php } ?>
@@ -129,7 +135,6 @@ header("refresh: 30");
                     </thead>
                     <tbody>
                         <?php
-
                         $issue = '<span class="text-danger">DOWN</span>';
                         // Récupération des sites
                         $stmt = $dbh->prepare("SELECT * FROM websites WHERE status=:status OR certificate NOT LIKE '%text-success%' ORDER BY name ASC");
@@ -318,7 +323,7 @@ header("refresh: 30");
                                 </tbody>
                             </table>
                         </div>
-                        </div>
+                    </div>
     </main>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
 </body>
