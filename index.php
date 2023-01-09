@@ -50,6 +50,14 @@ $dbh->exec($sql);
 $stmt = $dbh->prepare("SELECT * FROM feed ORDER BY date DESC LIMIT 100");
 $stmt->execute();
 $completeFeed = $stmt->fetchAll();
+
+//////////////////////////////////////////////////////////////////////////
+//
+// Refresh page every 5 sec
+//
+//////////////////////////////////////////////////////////////////////////
+
+header("refresh: 5");
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -66,9 +74,6 @@ $completeFeed = $stmt->fetchAll();
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
             <div class="container-fluid">
                 <a class="navbar-brand" href="index.php">phpMonit</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
                 <?php if (isset($_GET['search'])) {
                     $search = $_GET["search"];
                     if (preg_match('/[A-Z\'^£$%&*()}{@#~!?><>,|=_+¬-]/', $search)) {
@@ -78,6 +83,9 @@ $completeFeed = $stmt->fetchAll();
                         echo '<div></div>';
                     }
                 } else { ?>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                             <li class="nav-item">
@@ -111,6 +119,59 @@ $completeFeed = $stmt->fetchAll();
                 <div class="primary" style="display: none;">
             <?php }
         } ?>
+            <div class="container my-5">
+                <h3 id="websites" class="mb-5">Problems</h3>
+                <table class="table table-primary my-5">
+                    <thead>
+                        <tr>
+                            <th scope="col">nom</th>
+                            <th scope="col">status</th>
+                            <th scope="col">date</th>
+                            <th scope="col">certificat</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+
+                        $issue = '<span class="text-danger">DOWN</span>';
+                        // Récupération des sites
+                        $stmt = $dbh->prepare("SELECT * FROM websites WHERE status=:status OR certificate NOT LIKE '%text-success%' ORDER BY name ASC");
+                        $stmt->bindValue(':status', $issue);
+                        $stmt->execute();
+                        $websitesIssue = $stmt->fetchAll();
+
+                        // Récupération des serveurs
+                        $stmt = $dbh->prepare("SELECT * FROM servers WHERE status=:status ORDER BY name ASC");
+                        $stmt->bindValue(':status', $issue);
+                        $stmt->execute();
+                        $serversIssue = $stmt->fetchAll();
+
+                        foreach ($websitesIssue as $websiteIssue) {
+                        ?>
+
+                            <tr>
+                                <th><?php echo $websiteIssue['name'] ?></th>
+                                <td><?php echo $websiteIssue['status'] ?></td>
+                                <td><?php echo $websiteIssue['lastChange'] ?></td>
+                                <td><?php echo $websiteIssue['certificate'] ?></td>
+                            </tr>
+
+                        <?php }
+                        foreach ($serversIssue as $serverIssue) {
+                            ?>
+                            <tr>
+                                <th><?php echo $serverIssue['name'] ?></th>
+                                <td><?php echo $serverIssue['status'] ?></td>
+                                <td><?php echo $serverIssue['lastChange'] ?></td>
+                                <td><span>Pas de certificat</span></td>
+                            </tr>
+
+<?php
+                        }
+                        ?>
+                    </tbody>
+                </table>
+            </div>
             <div class="container my-5">
                 <h3 id="websites" class="mb-5">Sites web</h3>
                 <table class="table table-primary my-5">
@@ -334,7 +395,7 @@ $completeFeed = $stmt->fetchAll();
                                 </tbody>
                             </table>
                         </div>
-                    </div>
+                        </div>
     </main>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
 </body>

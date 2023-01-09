@@ -6,9 +6,9 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-$username = "";
+$username = "root";
 $password = "";
-$database = "";
+$database = "phpmonit";
 
 try {
     // Connexion à la bdd

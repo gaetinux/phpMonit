@@ -21,14 +21,14 @@ function checkServer($ip)
     $servers = $stmt->fetchAll();
 
     // Exécution du ping
-    exec("ping -c 2 -w 2 " . $ip, $output, $result);
+    exec("ping -n 2 -w 2 " . $ip, $output, $result);
 
     foreach ($servers as $server) {
 
         $currentStatus = $server['status'];
 
         if ($result == 0) {
-            $newStatus = "<span class='text-success'>OK</span>";
+            $newStatus = '<span class="text-success">OK</span>';
             if($currentStatus != $newStatus) {
                 $sql = "UPDATE servers SET status=:status WHERE name=:name";
                 $stmt = $dbh->prepare($sql);
@@ -52,7 +52,7 @@ function checkServer($ip)
                 $stmt->execute();
             }
         } else {
-            $newStatus = "<span class='text-danger'>DOWN</span>";
+            $newStatus = '<span class="text-danger">DOWN</span>';
             if($currentStatus != $newStatus) {
                 $sql = "UPDATE servers SET status=:status WHERE name=:name";
                 $stmt = $dbh->prepare($sql);
