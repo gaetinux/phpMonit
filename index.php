@@ -29,6 +29,7 @@ $sql = "CREATE table if not exists websites(
     name VARCHAR( 50 ) NOT NULL,
     status VARCHAR( 50 ) NULL,
     certificate VARCHAR( 250 ) NULL,
+    certificateInfos VARCHAR( 250 ) NULL,
     lastChange DATETIME);";
 $dbh->exec($sql);
 
@@ -272,6 +273,12 @@ header("refresh: 30");
                                         </tr>
                                     </tbody>
                                 </table>
+                                <div class="container my-5">
+                                    <h5>Server certificate</h5>
+                                    <p>
+                                        <?php echo $website['certificateInfos'] ?>
+                                    </p>
+                                </div>
                             <?php
                             }
                             foreach ($servers as $server) {

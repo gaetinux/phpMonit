@@ -121,20 +121,23 @@ function checkSSL($url)
     // Get informations
     $certInfo = curl_getinfo($curlInit, CURLINFO_CERTINFO);
 
-    include '../includes/db.php';
-
     // Récupération des sites
+    include '../includes/db.php';
     $stmt = $dbh->prepare("SELECT * FROM websites WHERE url=:url ORDER BY name ASC");
     $stmt->bindValue('url', $url);
     $stmt->execute();
     $websites = $stmt->fetchAll();
 
-    // Récupération de la date
-    $tz = 'Europe/Paris';
-    $timestamp = time();
-    $currentDate = new DateTime("now", new DateTimeZone($tz)); //first argument "must" be a string
-    $currentDate->setTimestamp($timestamp); //adjust the object to correct timestamp
-    $date = $currentDate->format('Y-m-d H:i:s');
+    foreach($websites as $website) {
+        $sslInfos = "Subject : " . $certInfo[0]['Subject'] . "<br>Start date : " . $certInfo[0]['Start date'] . "<br>Expire date : " . $certInfo[0]['Expire date'] . "<br>Issuer : " . $certInfo[0]['Issuer'] . "<br>SSL certificate verify ok.";
+        $sql = "UPDATE websites SET certificateInfos=:certificateInfos WHERE name=:name";
+        $stmt = $dbh->prepare($sql);
+        $stmt->bindValue(':name', $website['name']);
+        $stmt->bindValue(':certificateInfos', $sslInfos);
+        $stmt->execute();
+
+    }
+
 
     // Si des informations sont récupérées
     if ($certInfo) {
