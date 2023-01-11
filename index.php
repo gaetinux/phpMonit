@@ -152,7 +152,12 @@ header("refresh: 30");
                         foreach ($websitesIssue as $websiteIssue) {
                         ?>
                             <tr>
-                                <th><?php echo $websiteIssue['name'] ?></th>
+                                <th>
+                                    <form action="index.php" method="get">
+                                        <input type="hidden" id="search" name="search" value="<?php echo $websiteIssue['name'] ?>" required pattern="^[a-z]$" maxlength="20">
+                                        <input type="submit" value="<?php echo $websiteIssue['name'] ?>">
+                                    </form>
+                                </th>
                                 <td><?php echo $websiteIssue['status'] ?></td>
                                 <td><?php echo $websiteIssue['lastChange'] ?></td>
                                 <td><?php echo $websiteIssue['certificate'] ?></td>
@@ -161,7 +166,12 @@ header("refresh: 30");
                         foreach ($serversIssue as $serverIssue) {
                         ?>
                             <tr>
-                                <th><?php echo $serverIssue['name'] ?></th>
+                                <th>
+                                    <form action="index.php" method="get">
+                                        <input type="hidden" id="search" name="search" value="<?php echo $serverIssue['name'] ?>" required pattern="^[a-z]$" maxlength="20">
+                                        <input type="submit" value="<?php echo $serverIssue['name'] ?>">
+                                    </form>
+                                </th>
                                 <td><?php echo $serverIssue['status'] ?></td>
                                 <td><?php echo $serverIssue['lastChange'] ?></td>
                                 <td><span>Pas de certificat</span></td>
@@ -273,7 +283,7 @@ header("refresh: 30");
                                         </tr>
                                     </tbody>
                                 </table>
-                                <div class="container my-5">
+                                <div class="my-5">
                                     <h5>Server certificate</h5>
                                     <p>
                                         <?php echo $website['certificateInfos'] ?>
