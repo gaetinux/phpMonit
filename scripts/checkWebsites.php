@@ -128,12 +128,21 @@ function checkSSL($url)
     $stmt->execute();
     $websites = $stmt->fetchAll();
     foreach($websites as $website) {
-        $sslInfos = "Subject : " . $certInfo[0]['Subject'] . "<br>" . "Start date : " . $certInfo[0]['Start date'] . "<br>Expire date : " . $certInfo[0]['Expire date'] . "<br>Issuer : " . $certInfo[0]['Issuer'] . "<br>SSL certificate verify ok.";
-        $sql = "UPDATE websites SET certificateInfos=:certificateInfos WHERE name=:name";
-        $stmt = $dbh->prepare($sql);
-        $stmt->bindValue(':name', $website['name']);
-        $stmt->bindValue(':certificateInfos', $sslInfos);
-        $stmt->execute();
+        if($certInfo) {
+            $sslInfos = "Subject : " . $certInfo[0]['Subject'] . "<br>" . "Start date : " . $certInfo[0]['Start date'] . "<br>Expire date : " . $certInfo[0]['Expire date'] . "<br>Issuer : " . $certInfo[0]['Issuer'] . "<br>SSL certificate verify ok.";
+            $sql = "UPDATE websites SET certificateInfos=:certificateInfos WHERE name=:name";
+            $stmt = $dbh->prepare($sql);
+            $stmt->bindValue(':name', $website['name']);
+            $stmt->bindValue(':certificateInfos', $sslInfos);
+            $stmt->execute();
+        } else {
+            $sslInfos = "Aucune information.";
+            $sql = "UPDATE websites SET certificateInfos=:certificateInfos WHERE name=:name";
+            $stmt = $dbh->prepare($sql);
+            $stmt->bindValue(':name', $website['name']);
+            $stmt->bindValue(':certificateInfos', $sslInfos);
+            $stmt->execute();
+        }
     }
 
     // Si des informations sont récupérées
