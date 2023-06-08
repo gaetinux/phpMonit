@@ -61,7 +61,7 @@ if (isset($_GET["serverName"]) || isset($_GET["ip"])) {
                 <a class="navbar-brand" href="index.php">phpMonit</a>
                 <?php if (isset($_GET['search'])) {
                     $search = $_GET["search"];
-                    if (preg_match('/[A-Z\'^£$%&*()}{@#~!?><>,|=_+¬-]/', $search)) {
+                    if (preg_match('/[A-Z\'^£$%&*()}{@#~!?><>,|=+¬-]/', $search)) {
                         header('Location: ' . $_SERVER['HTTP_REFERER']);
                         exit;
                     } else {
@@ -99,7 +99,7 @@ if (isset($_GET["serverName"]) || isset($_GET["ip"])) {
         <?php
         if (isset($_GET['search'])) {
             $search = $_GET["search"];
-            if (preg_match('/[A-Z\'^£$%&*()}{@#~!?><>,|=_+¬-]/', $search)) {
+            if (preg_match('/[A-Z\'^£$%&*()}{@#~!?><>,|=+¬-]/', $search)) {
                 header('Location: ' . $_SERVER['HTTP_REFERER']);
                 exit;
             } else {
