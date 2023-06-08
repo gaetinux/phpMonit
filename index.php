@@ -29,7 +29,7 @@ $sql = "CREATE table if not exists websites(
     name VARCHAR( 50 ) NOT NULL,
     status VARCHAR( 50 ) NULL,
     certificate VARCHAR( 250 ) NULL,
-    certificateInfos VARCHAR( 250 ) NULL,
+    certificateInfos TEXT NULL,
     lastChange DATETIME);";
 $dbh->exec($sql);
 
@@ -41,6 +41,17 @@ $sql = "CREATE table if not exists feed(
     date DATETIME,
     certificate VARCHAR( 250 ) NULL);";
 $dbh->exec($sql);
+
+// Création de la table checks
+$sql = "CREATE table if not exists checks(
+    id INT( 11 ) AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR( 50 ) UNIQUE,
+    date DATETIME);";
+$dbh->exec($sql);
+// Insert websites and servers in checks
+$sql = "INSERT IGNORE INTO checks (name) VALUES ('websites'), ('servers');";
+$stmt = $dbh->prepare($sql);
+$stmt->execute();
 
 //////////////////////////////////////////////////////////////////////////
 //
@@ -124,6 +135,21 @@ header("refresh: 30");
             <?php }
         } ?>
             <div class="container my-5">
+                <?php
+                        // Récupération des derniers checks
+                        $stmt = $dbh->prepare("SELECT * FROM checks");
+                        $stmt->execute();
+                        $checks = $stmt->fetchAll();
+
+			foreach ($checks as $check) {
+		?>
+		<p>
+			<span>Last <?php echo $check['name']?> check : </span>
+			<span><?php echo $check['date']?></span>
+		</p>
+		<?php } ?>
+	    </div>
+            <div class="container my-5">
                 <h3 id="websites" class="mb-5">Problems</h3>
                 <table class="table table-primary my-5">
                     <thead>
@@ -174,7 +200,7 @@ header("refresh: 30");
                                 </th>
                                 <td><?php echo $serverIssue['status'] ?></td>
                                 <td><?php echo $serverIssue['lastChange'] ?></td>
-                                <td><span>Pas de certificat</span></td>
+                                <td><span>null</span></td>
                             </tr>
 
                         <?php } ?>

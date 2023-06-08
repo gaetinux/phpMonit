@@ -1,5 +1,6 @@
 <?php
 include '../includes/db.php';
+require './getLastCheck.php';
 
 // Récupération des sites
 $stmt = $dbh->prepare("SELECT * FROM websites ORDER BY name ASC");
@@ -51,6 +52,9 @@ function checkWebsite($url)
     $currentDate = new DateTime("now", new DateTimeZone($tz)); //first argument "must" be a string
     $currentDate->setTimestamp($timestamp); //adjust the object to correct timestamp
     $date = $currentDate->format('Y-m-d H:i:s');
+
+    // store last check date
+    getLastWebsitesCheck($date);
 
     foreach ($websites as $website) {
 
