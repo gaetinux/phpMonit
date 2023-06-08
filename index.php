@@ -245,7 +245,7 @@ header("refresh: 30");
                 <?php
                 if (isset($_GET["search"])) {
                     $search = $_GET["search"];
-                    if (preg_match('/[A-Z\'^£$%&*()}{@#~!?><>,|=_+¬-]/', $search)) {
+                    if (preg_match('/[A-Z\'^£$%&*()}{@#~!?><>,|=+¬-]/', $search)) {
                         header('Location: ' . $_SERVER['HTTP_REFERER']);
                         exit;
                     } else {
@@ -258,7 +258,7 @@ header("refresh: 30");
                         <?php
                         if (isset($_GET["search"])) {
                             $search = $_GET["search"];
-                            if (preg_match('/[A-Z\'^£$%&*()}{@#~!?><>,|=_+¬-]/', $search)) {
+                            if (preg_match('/[A-Z\'^£$%&*()}{@#~!?><>,|=+¬-]/', $search)) {
                                 header('Location: ' . $_SERVER['HTTP_REFERER']);
                                 exit;
                             } else {
