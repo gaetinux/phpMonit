@@ -65,11 +65,12 @@ function checkWebsite($url)
             $siteStatus = '<span class="text-success">OK</span>';
 
             if (($siteStatus != $website['status']) || ($showCertificate != $website['certificate'])) {
-                $sql = "UPDATE websites SET status=:status, certificate=:certificate WHERE name=:name";
+                $sql = "UPDATE websites SET status=:status, certificate=:certificate, lastChange=:date WHERE name=:name";
                 $stmt = $dbh->prepare($sql);
                 $stmt->bindValue(':name', $website['name']);
                 $stmt->bindValue(':status', $siteStatus);
                 $stmt->bindValue(':certificate', $showCertificate);
+                $stmt->bindValue(':date', $date);
                 $stmt->execute();
 
                 // Update feed
@@ -85,11 +86,12 @@ function checkWebsite($url)
             $siteStatus = '<span class="text-danger">DOWN</span>';
 
             if (($siteStatus != $website['status']) || ($showCertificate != $website['certificate'])) {
-                $sql = "UPDATE websites SET status=:status, certificate=:certificate WHERE name=:name";
+                $sql = "UPDATE websites SET status=:status, certificate=:certificate, lastChange=:date WHERE name=:name";
                 $stmt = $dbh->prepare($sql);
                 $stmt->bindValue(':name', $website['name']);
                 $stmt->bindValue(':status', $siteStatus);
                 $stmt->bindValue(':certificate', $showCertificate);
+                $stmt->bindValue(':date', $date);
                 $stmt->execute();
 
                 // Update feed

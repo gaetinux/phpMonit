@@ -41,22 +41,15 @@ function checkServer($ip)
 	// store last check date
         getLastServersCheck($date);
 
-
         if ($result == 0) {
             $newStatus = '<span class="text-success">OK</span>';
             if($currentStatus != $newStatus) {
-                $sql = "UPDATE servers SET status=:status WHERE name=:name";
+                $sql = "UPDATE servers SET status=:status, lastChange=:date WHERE name=:name";
                 $stmt = $dbh->prepare($sql);
                 $stmt->bindValue(':name', $server['name']);
                 $stmt->bindValue(':status', $newStatus);
+                $stmt->bindValue(':date', $date);
                 $stmt->execute();
-
-                // Update feed
-                $tz = 'Europe/Paris';
-                $timestamp = time();
-                $currentDate = new DateTime("now", new DateTimeZone($tz)); //first argument "must" be a string
-                $currentDate->setTimestamp($timestamp); //adjust the object to correct timestamp
-                $date = $currentDate->format('Y-m-d H:i:s');
 
                 $sql = "INSERT INTO feed (name, status, date, certificate) VALUES (:name, :status, :date, :certificate)";
                 $stmt = $dbh->prepare($sql);
@@ -69,18 +62,12 @@ function checkServer($ip)
         } else {
             $newStatus = '<span class="text-danger">DOWN</span>';
             if($currentStatus != $newStatus) {
-                $sql = "UPDATE servers SET status=:status WHERE name=:name";
+                $sql = "UPDATE servers SET status=:status, lastChange=:date WHERE name=:name";
                 $stmt = $dbh->prepare($sql);
                 $stmt->bindValue(':name', $server['name']);
                 $stmt->bindValue(':status', $newStatus);
+                $stmt->bindValue(':date', $date);
                 $stmt->execute();
-
-                // Update feed
-                $tz = 'Europe/Paris';
-                $timestamp = time();
-                $currentDate = new DateTime("now", new DateTimeZone($tz)); //first argument "must" be a string
-                $currentDate->setTimestamp($timestamp); //adjust the object to correct timestamp
-                $date = $currentDate->format('Y-m-d H:i:s');
 
                 $sql = "INSERT INTO feed (name, status, date, certificate) VALUES (:name, :status, :date, :certificate)";
                 $stmt = $dbh->prepare($sql);
