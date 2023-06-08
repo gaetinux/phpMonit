@@ -114,7 +114,7 @@ header("refresh: 30");
                             </li>
                         </ul>
                         <form class="d-flex" action="index.php" method="get">
-                            <input class="form-control me-2" type="text" placeholder="website or server name" id="search" name="search" required pattern="^[a-z ._]+$" maxlength="50">
+                            <input class="form-control me-2" type="text" placeholder="website or server name" id="search" name="search" required pattern="^[a-z ._0-9]+$" maxlength="50">
                             <button class="btn btn-outline-primary" type="submit">search</button>
                         </form>
                     </div>
